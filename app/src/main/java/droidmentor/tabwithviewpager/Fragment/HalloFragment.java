@@ -18,7 +18,9 @@ import java.util.ArrayList;
 
 import droidmentor.tabwithviewpager.Adapter.xAdapter;
 import droidmentor.tabwithviewpager.DividerItemDecoration;
+
 import droidmentor.tabwithviewpager.R;
+import droidmentor.tabwithviewpager.ViewPager.CustomTabActivity;
 import droidmentor.tabwithviewpager.data.model.Answer.Answer;
 import droidmentor.tabwithviewpager.data.model.Answer.Item;
 import droidmentor.tabwithviewpager.data.remote.RemoteStack.ApiUtils;
@@ -35,6 +37,7 @@ public class HalloFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
     ProgressDialog progress;
 
+    CustomTabActivity ca = new CustomTabActivity();
     Boolean isRefreshing = false;
 
     SOService mServices;
@@ -74,7 +77,7 @@ public class HalloFragment extends Fragment {
             }
         });
 
-        showDialog();
+        ca.showDialog(getActivity());
         loadAnswers();
 
         return halo;
@@ -87,18 +90,11 @@ public class HalloFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    public void showDialog() {
-        progress = new ProgressDialog(getContext());
-        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progress.setMessage("Loading");
-        progress.show();
-    }
-
     public void loadAnswers() {
         mServices.getAnswers().enqueue(new Callback<Answer>() {
             @Override
             public void onResponse(Call<Answer> call, Response<Answer> response) {
-                progress.dismiss();
+                ca.removeDialog();
                 if (response.isSuccessful()) {
                     if (isRefreshing) {
                         swipeRefreshLayout.setRefreshing(false);

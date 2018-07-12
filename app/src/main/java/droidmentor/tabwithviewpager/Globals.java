@@ -12,6 +12,6 @@ public class Globals {
     public static final String BASE_URL_STACK2 = "/answers?order=desc&sort=activity&site=stackoverflow";
 
     public static final String BASE_URL_INSTAGRAM = "https://www.instagram.com/p/";
-    public static final String BASE_URL_INSTAGRAM_GETPHOTO = "BkBxFmlFdek/?__a=1";
+    public static final String BASE_URL_INSTAGRAM_GETPHOTO = "BjbDFJYBQm-/?__a=1";
 
 }

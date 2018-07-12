@@ -1,5 +1,7 @@
 package droidmentor.tabwithviewpager.ViewPager;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -8,8 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.airbnb.lottie.LottieAnimationView;
 
 import droidmentor.tabwithviewpager.Fragment.CallsFragment;
 import droidmentor.tabwithviewpager.Fragment.ChatFragment;
@@ -27,6 +32,7 @@ public class CustomTabActivity extends AppCompatActivity {
     private ViewPager viewPager;
 
     //Fragments
+    Dialog dialog;
 
     ChatFragment chatFragment;
     CallsFragment callsFragment;
@@ -92,7 +98,7 @@ public class CustomTabActivity extends AppCompatActivity {
                 Toast.makeText(this, "Home Settings Click", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.action_hallo:
-                Toast.makeText(this,"hallo", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "hallo", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.action_with_icon:
                 Intent withicon = new Intent(this, TabWithIconActivity.class);
@@ -134,6 +140,25 @@ public class CustomTabActivity extends AppCompatActivity {
         } else
             tv_count.setVisibility(View.GONE);
         return view;
+    }
+
+    public void showDialog(Activity activity) {
+        dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dialog);
+
+        LottieAnimationView lottieAnimationView = (LottieAnimationView) dialog.findViewById(R.id.lottieAnimationView);
+        lottieAnimationView.setAnimation("loading_1.json");
+        lottieAnimationView.playAnimation();
+        lottieAnimationView.loop(true);
+
+        dialog.show();
+    }
+
+    public void removeDialog() {
+        dialog.cancel();
     }
 
     private void setupTabIcons() {
