@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="url_stack_api_BASEURL">https://api.stackexchange.com/2.2/</string>
+    <string name="url_stack_api_GETANSWER">/answers?order=desc&amp;sort=activity&amp;site=stackoverflow</string>
+
+
+</resources>
