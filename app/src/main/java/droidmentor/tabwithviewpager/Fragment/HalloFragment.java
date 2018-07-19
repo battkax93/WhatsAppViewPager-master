@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
+
 import java.util.ArrayList;
 
 import droidmentor.tabwithviewpager.Adapter.xAdapter;
@@ -29,7 +31,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
 public class HalloFragment extends Fragment {
 
     xAdapter mAdapster;
@@ -39,6 +40,7 @@ public class HalloFragment extends Fragment {
 
     CustomTabActivity ca = new CustomTabActivity();
     Boolean isRefreshing = false;
+    ShimmerFrameLayout shimmerFrameLayout;
 
     SOService mServices;
 
@@ -56,9 +58,11 @@ public class HalloFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View halo = inflater.inflate(R.layout.fragment_hallo,container,false);
-        recyclerView = (RecyclerView) halo.findViewById(R.id.rv_answers);
-        swipeRefreshLayout = (SwipeRefreshLayout) halo.findViewById(R.id.swiperefresh);
+        View halo = inflater.inflate(R.layout.fragment_hallo, container, false);
+
+        recyclerView = halo.findViewById(R.id.rv_answers);
+        swipeRefreshLayout = halo.findViewById(R.id.swiperefresh);
+        shimmerFrameLayout = halo.findViewById(R.id.shimmer_view_container);
         mServices = ApiUtils.getSOService();
         mAdapster = new xAdapter(getContext(), new ArrayList<Item>(0));
 
@@ -73,11 +77,14 @@ public class HalloFragment extends Fragment {
             @Override
             public void onRefresh() {
                 isRefreshing = true;
+                shimmerFrameLayout.setVisibility(View.VISIBLE);
+                shimmerFrameLayout.startShimmerAnimation();
                 loadAnswers();
             }
         });
 
-        ca.showDialog(getActivity());
+//        ca.showDialog(getActivity());
+        shimmerFrameLayout.startShimmerAnimation();
         loadAnswers();
 
         return halo;
@@ -94,27 +101,31 @@ public class HalloFragment extends Fragment {
         mServices.getAnswers().enqueue(new Callback<Answer>() {
             @Override
             public void onResponse(Call<Answer> call, Response<Answer> response) {
-                ca.removeDialog();
+//                ca.removeDialog();
+                shimmerFrameLayout.stopShimmerAnimation();
+                shimmerFrameLayout.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     if (isRefreshing) {
                         swipeRefreshLayout.setRefreshing(false);
+                        shimmerFrameLayout.stopShimmerAnimation();
+                        shimmerFrameLayout.setVisibility(View.GONE);
                         isRefreshing = false;
                     }
                     mAdapster.updateAnswers(response.body().getItems());
                 } else {
                     Toast toast = new Toast(getContext());
-                    Toast.makeText(getContext(),"Check your connection", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
+                    Toast.makeText(getContext(), "Check your connection", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 0);
                     toast.show();
                 }
             }
 
             @Override
             public void onFailure(Call<Answer> call, Throwable t) {
-                progress.dismiss();
+//                progress.dismiss();
                 Toast toast = new Toast(getContext());
-                Toast.makeText(getContext(),"Check your connection", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
+                toast.makeText(getContext(), "Check your connection", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 0);
                 toast.show();
             }
         });

@@ -47,13 +47,12 @@ public class CustomTabActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_without_icon);
 
-        //Initializing viewPager
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
+        viewPager = findViewById(R.id.viewpager);
+        tabLayout = findViewById(R.id.tablayout);
 
-        //Initializing the tablayout
-        tabLayout = (TabLayout) findViewById(R.id.tablayout);
+        setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
+
         try {
             setupTabIcons();
         } catch (Exception e) {
@@ -131,8 +130,8 @@ public class CustomTabActivity extends AppCompatActivity {
 
     private View prepareTabView(int pos) {
         View view = getLayoutInflater().inflate(R.layout.custom_tab, null);
-        TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
-        TextView tv_count = (TextView) view.findViewById(R.id.tv_count);
+        TextView tv_title = view.findViewById(R.id.tv_title);
+        TextView tv_count = view.findViewById(R.id.tv_count);
         tv_title.setText(tabTitle[pos]);
         if (unreadCount[pos] > 0) {
             tv_count.setVisibility(View.VISIBLE);
@@ -164,13 +163,8 @@ public class CustomTabActivity extends AppCompatActivity {
     private void setupTabIcons() {
 
         for (int i = 0; i < tabTitle.length; i++) {
-            /*TabLayout.Tab tabitem = tabLayout.newTab();
-            tabitem.setCustomView(prepareTabView(i));
-            tabLayout.addTab(tabitem);*/
-
             tabLayout.getTabAt(i).setCustomView(prepareTabView(i));
         }
-
 
     }
 }

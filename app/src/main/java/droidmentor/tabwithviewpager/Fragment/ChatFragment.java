@@ -73,7 +73,7 @@ public class ChatFragment extends Fragment {
         ivPP = (CircleImageView) Chat.findViewById(R.id.ivPP);
         tvUsername = (TextView) Chat.findViewById(R.id.tv_username);
 
-        ca.showDialog(getActivity());
+//        ca.showDialog(getActivity());
         loadAnswerIG();
 
         return Chat;
@@ -114,7 +114,7 @@ public class ChatFragment extends Fragment {
             @Override
             public void onResponse(Call<Answer2> call, Response<Answer2> response) {
                 if (response.isSuccessful()) {
-                    ca.removeDialog();
+//                    ca.removeDialog();
                     l1.setVisibility(View.VISIBLE);
                     ivTest.setVisibility(View.VISIBLE);
 

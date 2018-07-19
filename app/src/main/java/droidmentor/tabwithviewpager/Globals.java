@@ -14,4 +14,5 @@ public class Globals {
     public static final String BASE_URL_INSTAGRAM = "https://www.instagram.com/p/";
     public static final String BASE_URL_INSTAGRAM_GETPHOTO = "BjbDFJYBQm-/?__a=1";
 
+
 }
